@@ -111,33 +111,17 @@ Copyright &copy; @ Shunhong Zhang
 
 </table>
 
-  
-<!-- ================= GoatCounter 完美兼容版 ================= -->
-<!-- 1. 计数器容器 -->
-<div id="stats-counter" style="text-align: center; margin: 20px 0; color: #666; font-size: 14px;">
-    📊 Visit：Loading ...
+<!-- ================= GoatCounter 纯文本图片计数器 (最稳方案) ================= -->
+<div id="stats-counter" style="text-align: center; margin: 20px 0; color: #666; font-size: 14px; display: flex; justify-content: center; align-items: center; gap: 5px;">
+    <span>📊 Visit：</span>
+    <!-- 直接引入官方的纯文本数字（无边框、无版权信息） -->
+    <img src="https://goatcounter.com" 
+         alt="访问量" 
+         style="display: inline-block; vertical-align: middle; filter: grayscale(100%);">
 </div>
+<!-- ========================================================================= -->
 
-<!-- 2. 先加载核心统计脚本 (注意：去掉了 async，确保它先加载完) -->
-<script data-goatcounter="https://donkey.goatcounter.com/count" src="//gc.zgo.at/count.js"></script>
-  
-<!-- 3. 用纯函数拦截数字（不触发官方任何 HTML 模版） -->
-<script>
-    var checkGoatCounter = setInterval(function() {
-        if (window.goatcounter && window.goatcounter.visit_count) {
-            clearInterval(checkGoatCounter); // 停止监听
-            
-            // 纯函数回调：只接数字，绝不接官方的框
-            window.goatcounter.visit_count(function(count) {
-                var el = document.getElementById('stats-counter');
-                if (el) {
-                    el.innerHTML = '📊 Visit：' + count;
-                }
-            });
-        }
-    }, 100);
-</script>
-<!-- ========================================================= -->
+
   
 </body>
 </html>
