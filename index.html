@@ -107,7 +107,33 @@ Copyright &copy; @ Shunhong Zhang
 </td>
 </tr>
 
-
 </table>
+
+<!-- ================= GoatCounter 访问量统计与展示小部件 ================= -->
+<!-- 1. 定义一个容器，用来存放显示的数字。你可以通过修改这里的文字，比如改成 "📊 本站阅读量：" -->
+<div id="stats-counter" style="text-align: center; margin: 20px 0; color: #666; font-size: 14px;">
+    📊 网站总访问量：正在加载...
+</div>
+
+<!-- 2. 执行显示数字的脚本 (注意：这段必须放在加载 count.js 之前) -->
+<script>
+    window.goatcounter = {
+        // 让脚本自动把访问量数字，渲染并追加到我们上面定义好的 #stats-counter 容器中
+        visit_count: function(count) {
+            var el = document.getElementById('stats-counter');
+            if (el) {
+                // 如果正常获取到数据，就更新文本（count 为具体数字）
+                el.innerHTML = '📊 网站总访问量：' + count;
+            }
+        }
+    };
+</script>
+
+<!-- 3. 加载 GoatCounter 的核心统计脚本 (记得把 你的专属Code 替换掉) -->
+<script data-goatcounter="https://你的专属Code.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<!-- ==================================================================== -->
+
+  
 </body>
 </html>
