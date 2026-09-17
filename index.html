@@ -115,29 +115,28 @@ Copyright &copy; @ Shunhong Zhang
 <!-- ================= GoatCounter 完美兼容版 ================= -->
 <!-- 1. 计数器容器 -->
 <div id="stats-counter" style="text-align: center; margin: 20px 0; color: #666; font-size: 14px;">
-    📊 网站总访问量：正在加载...
+    📊 Visit：Loading ...
 </div>
 
 <!-- 2. 先加载核心统计脚本 (注意：去掉了 async，确保它先加载完) -->
 <script data-goatcounter="https://donkey.goatcounter.com/count" src="//gc.zgo.at/count.js"></script>
   
-<!-- 3. 执行安全的数字获取逻辑 -->
+<!-- 3. 拦截数字，纯文本渲染 -->
 <script>
-    // 监听 count.js 是否加载完毕，加载完后直接调用官方内置的 visit_count
     var checkGoatCounter = setInterval(function() {
         if (window.goatcounter && window.goatcounter.visit_count) {
-            clearInterval(checkGoatCounter); // 停止定时器
+            clearInterval(checkGoatCounter); // 停止监听
             
-            // 优雅地拉取数据，并渲染到我们的指定容器中
-            window.goatcounter.visit_count({
-                append: '#stats-counter',
-                // 自定义展示的模版
-                template: function(count) { 
-                    return '📊 网站总访问量：' + count; 
+            // 核心修改：不使用官方的 append 渲染框，而是通过函数拦截数字
+            window.goatcounter.visit_count(function(count) {
+                var el = document.getElementById('stats-counter');
+                if (el) {
+                    // 只把纯数字拼接到你的文字后面，没有任何框和多余链接
+                    el.innerHTML = '📊 Visit：' + count;
                 }
             });
         }
-    }, 100); // 每 100 毫秒检查一次，直到加载成功
+    }, 100);
 </script>
 <!-- ========================================================= -->
   
