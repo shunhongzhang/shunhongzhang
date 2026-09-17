@@ -111,31 +111,35 @@ Copyright &copy; @ Shunhong Zhang
 
 </table>
 
-<!-- ================= GoatCounter 访问量统计与展示小部件 ================= -->
-<!-- 1. 定义一个容器，用来存放显示的数字。你可以通过修改这里的文字，比如改成 "📊 本站阅读量：" -->
+  
+<!-- ================= GoatCounter 完美兼容版 ================= -->
+<!-- 1. 计数器容器 -->
 <div id="stats-counter" style="text-align: center; margin: 20px 0; color: #666; font-size: 14px;">
-    📊 Total visit：Loading ...
+    📊 网站总访问量：正在加载...
 </div>
 
-<!-- 2. 执行显示数字的脚本 (注意：这段必须放在加载 count.js 之前) -->
+<!-- 2. 先加载核心统计脚本 (注意：去掉了 async，确保它先加载完) -->
+<script data-goatcounter="https://donkey.goatcounter.com/count" src="//gc.zgo.at/count.js"></script>
+  
+<!-- 3. 执行安全的数字获取逻辑 -->
 <script>
-    window.goatcounter = {
-        // 让脚本自动把访问量数字，渲染并追加到我们上面定义好的 #stats-counter 容器中
-        visit_count: function(count) {
-            var el = document.getElementById('stats-counter');
-            if (el) {
-                // 如果正常获取到数据，就更新文本（count 为具体数字）
-                el.innerHTML = '📊 Total visit：' + count;
-            }
+    // 监听 count.js 是否加载完毕，加载完后直接调用官方内置的 visit_count
+    var checkGoatCounter = setInterval(function() {
+        if (window.goatcounter && window.goatcounter.visit_count) {
+            clearInterval(checkGoatCounter); // 停止定时器
+            
+            // 优雅地拉取数据，并渲染到我们的指定容器中
+            window.goatcounter.visit_count({
+                append: '#stats-counter',
+                // 自定义展示的模版
+                template: function(count) { 
+                    return '📊 网站总访问量：' + count; 
+                }
+            });
         }
-    };
+    }, 100); // 每 100 毫秒检查一次，直到加载成功
 </script>
-
-<!-- 3. 加载 GoatCounter 的核心统计脚本 (记得把 你的专属Code 替换掉) -->
-    <script data-goatcounter="https://donkey.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-<!-- ==================================================================== -->
-
+<!-- ========================================================= -->
   
 </body>
 </html>
