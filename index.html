@@ -121,18 +121,17 @@ Copyright &copy; @ Shunhong Zhang
 <!-- 2. 先加载核心统计脚本 (注意：去掉了 async，确保它先加载完) -->
 <script data-goatcounter="https://donkey.goatcounter.com/count" src="//gc.zgo.at/count.js"></script>
   
-<!-- 3. 拦截数字，纯文本渲染 -->
+<!-- 3. 用纯函数拦截数字（不触发官方任何 HTML 模版） -->
 <script>
     var checkGoatCounter = setInterval(function() {
         if (window.goatcounter && window.goatcounter.visit_count) {
             clearInterval(checkGoatCounter); // 停止监听
             
-            // 核心修改：不使用官方的 append 渲染框，而是通过函数拦截数字
+            // 纯函数回调：只接数字，绝不接官方的框
             window.goatcounter.visit_count(function(count) {
                 var el = document.getElementById('stats-counter');
                 if (el) {
-                    // 只把纯数字拼接到你的文字后面，没有任何框和多余链接
-                    el.innerHTML = '📊 Visit：' + count;
+                    el.innerHTML = '📊 网站总访问量：' + count;
                 }
             });
         }
